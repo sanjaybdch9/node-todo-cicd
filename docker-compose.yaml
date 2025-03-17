@@ -5,3 +5,4 @@ services:
     image: akki572368/node-app
     ports:
       - "8000:8000"
+      
