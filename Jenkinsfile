@@ -1,35 +1,29 @@
+@Library('Shared')_
 pipeline{
-    agent { label 'dev-server' }
+    agent { label 'agent'}
     
     stages{
-        stage("Code Clone"){
+        stage("Code clone"){
             steps{
-                echo "Code Clone Stage"
-                git url: "https://github.com/LondheShubham153/node-todo-cicd.git", branch: "master"
+
+            clone("https://github.com/ankitkumar-ssk/node-todo-cicd.git","master")
             }
         }
-        stage("Code Build & Test"){
+        stage("Code Build"){
             steps{
-                echo "Code Build Stage"
-                sh "docker build -t node-app ."
+            dockerbuild("notes-app","latest")
             }
         }
-        stage("Push To DockerHub"){
+        stage("Push to DockerHub"){
             steps{
-                withCredentials([usernamePassword(
-                    credentialsId:"dockerHubCreds",
-                    usernameVariable:"dockerHubUser", 
-                    passwordVariable:"dockerHubPass")]){
-                sh 'echo $dockerHubPass | docker login -u ${env.dockerHubUser} -p ${env.dockerHubPass}'
-                sh "docker image tag node-app:latest ${env.dockerHubUser}/node-app:latest"
-                sh "docker push ${env.dockerHubUser}/node-app:latest"
-                }
+                push("dockerHubCreds","notes-app","latest")
             }
         }
         stage("Deploy"){
             steps{
-                sh "docker compose down && docker compose up -d --build"
+                deploy()
             }
         }
+        
     }
 }
