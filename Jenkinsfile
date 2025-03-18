@@ -19,9 +19,9 @@ pipeline{
                 push("dockerHubCreds","notes-app","latest")
             }
         }
-        stage("Deploy"){
+        stage("Compose"){
             steps{
-                sh "docker compose up -d"
+                sh "docker-compose down && docker-compose up -d"
             }
         }
         
