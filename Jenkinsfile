@@ -9,7 +9,8 @@ pipeline{
             clone("https://github.com/sanjaybdch9/node-todo-cicd.git","master")
             }
         }
-        stage("Code Build"){
+        stage("Code Build")
+        {
             steps{
             dockerbuild("notes-app","latest")
             }
