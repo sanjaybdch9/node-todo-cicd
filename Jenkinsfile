@@ -1,6 +1,6 @@
 @Library('gitlib')_
 pipeline{
-    agent { label 'slave-1'}
+    agent any
     
     stages{
         stage("Code clone"){
